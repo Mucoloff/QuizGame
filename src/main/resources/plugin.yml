@@ -1,0 +1,8 @@
+name: QuizGame
+version: '${project.version}'
+main: dev.sweety.quizgame.QuizGame
+api-version: '1.17'
+load: STARTUP
+authors: [SweetyDreams_]
+description: Quiz Game
+website: www.sweety.gay
