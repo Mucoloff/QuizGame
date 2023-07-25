@@ -1,18 +1,8 @@
-mariadb:
-  #use url or host, port and database
-  url: "jdbc:mariadb://localhost:3306/quiz_game"
+database:
   host: "localhost"
   port: 3306
-  user: "root"
-  password: "password"
-  database: "quiz_game"
+  name: "quiz_game"
+  username: "root"
+  password: ""
 
-categories:
-  - prova:
-      - a
-      - b
-      - c
-  - prova1:
-      - d
-      - e
-      - f
+categories: []
