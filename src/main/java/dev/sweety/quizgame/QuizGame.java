@@ -30,19 +30,18 @@ public final class QuizGame extends JavaPlugin {
         instance = this;
         Config.init();
 
-        String host = config.getString("database.host");
-        int port = config.getInt("database.port");
-        String database = config.getString("database.name");
-        String username = config.getString("database.username");
-        String password = config.getString("database.password");
-
-        databaseManager = new DatabaseManager(host, port, database, username, password);
-        databaseManager.createUsersTable();
+        databaseManager = new DatabaseManager(
+                config.getString("database.host"),
+                config.getInt("database.port"),
+                config.getString("database.name"),
+                config.getString("database.url"),
+                config.getString("database.username"),
+                config.getString("database.password"))
+                .createUsersTable();
 
         statsManager = new StatsManager(databaseManager);
 
         ReflectionUtil.register("dev.sweety.quizgame.commands.api.impl");
-
 
         getLogger().info(Logo.logo("QuizGame", "§aEnable", "§e1.0.4"));
     }

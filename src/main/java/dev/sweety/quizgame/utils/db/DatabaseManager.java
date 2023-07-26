@@ -12,8 +12,8 @@ public class DatabaseManager {
     private final String PASSWORD;
     private final String URL;
 
-    public DatabaseManager(String HOST, int PORT, String DATABASE, String USERNAME, String PASSWORD) {
-        this("jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASE + "?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true", USERNAME, PASSWORD);
+    public DatabaseManager(String HOST, int PORT, String DATABASE, String URL, String USERNAME, String PASSWORD) {
+        this("jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASE + URL, USERNAME, PASSWORD);
     }
 
     public DatabaseManager(String URL, String USERNAME, String PASSWORD) {
@@ -34,7 +34,7 @@ public class DatabaseManager {
     }
 
     @SneakyThrows
-    public void createUsersTable() {
+    public DatabaseManager createUsersTable() {
         Connection connection = getConnection();
         Statement statement = connection.createStatement();
         String query = "CREATE TABLE IF NOT EXISTS users (" +
@@ -42,7 +42,7 @@ public class DatabaseManager {
                 "player_uuid VARCHAR(36) NOT NULL," +
                 "score DOUBLE)";
         statement.executeUpdate(query);
-
+        return this;
     }
 
 

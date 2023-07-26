@@ -4,5 +4,4 @@ import dev.sweety.quizgame.QuizGame;
 
 public interface InstanceAccess {
     QuizGame plugin = QuizGame.getInstance();
-
 }

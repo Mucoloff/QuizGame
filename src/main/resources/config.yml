@@ -3,32 +3,33 @@ database:
   host: "localhost"
   port: 3306
   name: "quiz_game"
+  url: "?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true"
   username: "root"
   password: ""
 
 # Messages Configuration
 messages:
   notAPlayer: "&4You are not a player!"
-  format: "&7[&6%0%&7] &6%1%:&f\n"
-  hover: "&7[&6Click for &6&lanswer&6!&7] %0% %1% %2% %3% %4% %5%"
-  startGame: "Start a game first!"
-  invalidPlayer: "Please use this command as a player"
-  invalidCategory: "Invalid category."
-  invalidAnswer: "Invalid answer."
-  points: "Congratulations! You earned %0% points"
+  format: "&7[%0%&7] %1%&f\n"
+  hover: "&e&lClick &6for answer&6: %5%&6!"
+  startGame: "&4Start a game first!"
+  invalidPlayer: "&4Please use this command as a player"
+  invalidCategory: "&4Invalid category. Available categories:\n&f%0%"
+  invalidAnswer: "&4Invalid answer."
+  points: "&6Congratulations! You &e&learned &f%0% &6points"
   showPoint: "&6%0%'s score: %1% points"
   separator: "\n"
 
 # Categories Configuration
 categories:
   geography:
-    category: "Geography"
+    category: "&9Geography"
     questions:
       capital:
-        question: "What is the capital of France?"
+        question: "&6What is the capital of France?"
         answers:
           paris:
-            answer: "&6Paris"
+            answer: "&aParis"
             points: 1.0
           london:
             answer: "&aLondon"
@@ -37,14 +38,14 @@ categories:
             answer: "&aRome"
             points: 0.0
           list:
-            - paris
-            - london
-            - rome
+            - "paris"
+            - "london"
+            - "rome"
       river:
-        question: "Which river is the longest in the world?"
+        question: "&bWhich river is the longest in the world?"
         answers:
           nile:
-            answer: "&6Nile River"
+            answer: "&aNile River"
             points: 1.0
           amazon:
             answer: "&aAmazon River"
@@ -53,47 +54,47 @@ categories:
             answer: "&aYangtze River"
             points: 0.0
           list:
-            - nile
-            - amazon
-            - yangtze
+            - "nile"
+            - "amazon"
+            - "yangtze"
       list:
         - "capital"
         - "river"
   movies:
-    category: "Movies"
+    category: "&4Movies"
     questions:
       oscar:
-        question: "Which movie won the Best Picture Oscar in 2020?"
+        question: "&6Which movie won the Best Picture Oscar in 2020?"
         answers:
           parasite:
-            answer: "Parasite"
+            answer: "&aParasite"
             points: 1.0
           joker:
-            answer: "Joker"
+            answer: "&aJoker"
             points: 0.0
           1917:
-            answer: "1917"
+            answer: "&a1917"
             points: 0.0
           list:
-            - parasite
-            - joker
-            - 1917
+            - "parasite"
+            - "joker"
+            - "1917"
       actor:
-        question: "Who played the role of Iron Man in the Marvel movies?"
+        question: "&6Who played the role of Iron Man in the Marvel movies?"
         answers:
           robert_downey_jr:
-            answer: "Robert Downey Jr."
+            answer: "&aRobert Downey Jr."
             points: 1.0
           chris_evans:
-            answer: "Chris Evans"
+            answer: "&aChris Evans"
             points: 0.0
           tom_holland:
-            answer: "Tom Holland"
+            answer: "&aTom Holland"
             points: 0.0
           list:
-            - robert_downey_jr
-            - chris_evans
-            - tom_holland
+            - "robert_downey_jr"
+            - "chris_evans"
+            - "tom_holland"
       list:
         - "oscar"
         - "actor"

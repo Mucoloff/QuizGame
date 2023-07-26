@@ -31,8 +31,16 @@ public class Play extends Command {
             return;
         }
 
+        StringBuilder categories = new StringBuilder();
+        List<String> names = Config.getNames();
+        for (int i = 0; i < names.size(); i++) {
+            String name = names.get(i);
+            categories.append(name);
+            if (i != names.size() - 1) categories.append(Config.string("separator"));
+        }
+
         if (args.size() < 1) {
-            p.sendMessage(Config.message("invalidCategory"));
+            p.sendMessage(Config.format("invalidCategory", categories.toString()));
             return;
         }
 
@@ -41,7 +49,7 @@ public class Play extends Command {
         Category category = Config.getCategories().stream().filter(c -> c.name().equalsIgnoreCase(categotyName)).findFirst().orElse(null);
 
         if (category == null) {
-            p.sendMessage(Config.message("invalidCategory"));
+            p.sendMessage(Config.format("invalidCategory", categories.toString()));
             return;
         }
 

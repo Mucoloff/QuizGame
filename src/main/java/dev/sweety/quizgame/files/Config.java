@@ -21,16 +21,19 @@ import java.util.regex.Pattern;
 public class Config implements InstanceAccess {
 
     public static FileConfiguration config;
-    @Getter
-    private static final List<Category> categories = new ArrayList<>();
+    @Getter private static final List<Category> categories = new ArrayList<>();
+    @Getter private static final List<String> names = new ArrayList<>();
 
     public static void init() {
         plugin.saveDefaultConfig();
         config = plugin.getConfig();
 
-        //test();
+        reloadCategories();
+    }
 
+    private static void reloadCategories() {
         categories.clear();
+        names.clear();
 
         for (String cName : config.getStringList("categories.list")) {
             String category = config.getString(String.format("categories.%s.category", cName));
@@ -46,12 +49,15 @@ public class Config implements InstanceAccess {
                 questions.add(new Question(qName, question, answers));
             }
             categories.add(new Category(cName, category, questions));
+            names.add(cName);
         }
     }
 
     public static void reload() {
         plugin.saveConfig();
         plugin.reloadConfig();
+
+        reloadCategories();
     }
 
     public static @NotNull Component component(String message) {

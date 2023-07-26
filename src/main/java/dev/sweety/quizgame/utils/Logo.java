@@ -277,9 +277,9 @@ public class Logo {
                     bottom.append("└─┘");
                 }
                 case ' ' -> {
-                    topppp.append("  ");
-                    center.append("  ");
-                    bottom.append("  ");
+                    topppp.append(" ");
+                    center.append(" ");
+                    bottom.append(" ");
                 }
                 default -> {
                     topppp.append(c);
@@ -290,6 +290,6 @@ public class Logo {
         }
         return "\n" + topppp + add1 + "\u001b[37m\n" +
                 center + add2 + "\u001b[37m\n" +
-                bottom + "\u001b[34;1mDiscord: §9mksweety\u001b[37m";
+                bottom + "\u001b[34;1mDiscord: §bmksweety\u001b[37m";
     }
 }
