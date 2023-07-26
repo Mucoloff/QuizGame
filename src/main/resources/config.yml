@@ -1,3 +1,4 @@
+# Database Configuration
 database:
   host: "localhost"
   port: 3306
@@ -5,19 +6,20 @@ database:
   username: "root"
   password: ""
 
+# Messages Configuration
 messages:
   notAPlayer: "&4You are not a player!"
   format: "&7[&6%0%&7] &6%1%:&f\n"
   hover: "&7[&6Click for &6&lanswer&6!&7] %0% %1% %2% %3% %4% %5%"
-  startGame: "start a game first!"
-  invalidPlayer: "insert a valid player"
-  invalidCategory: "insert a valid category"
-  invalidAnswer: "insert a valid answer"
-  points: "You won %0% points"
-  showPoint: "&6%0% 's score: %1%"
+  startGame: "Start a game first!"
+  invalidPlayer: "Please use this command as a player"
+  invalidCategory: "Invalid category."
+  invalidAnswer: "Invalid answer."
+  points: "Congratulations! You earned %0% points"
+  showPoint: "&6%0%'s score: %1% points"
   separator: "\n"
 
-
+# Categories Configuration
 categories:
   geography:
     category: "Geography"
