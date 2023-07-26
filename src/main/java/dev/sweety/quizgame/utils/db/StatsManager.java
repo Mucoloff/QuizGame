@@ -18,11 +18,11 @@ public class StatsManager {
     }
 
     @SneakyThrows
-    public void createStats(UUID playerUUID, Integer score) {
+    public void createStats(UUID playerUUID, Double score) {
         Connection connection = databaseManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("INSERT INTO users (player_uuid, score) VALUES (?,?)");
         statement.setString(1, playerUUID.toString());
-        statement.setInt(2, score);
+        statement.setDouble(2, score);
         statement.executeUpdate();
     }
 
@@ -35,7 +35,7 @@ public class StatsManager {
     public void updatePlayerStats(PlayerStats stats) {
         Connection connection = databaseManager.getConnection();
         PreparedStatement statement = connection.prepareStatement("UPDATE users SET score = ? WHERE player_uuid = ?");
-        statement.setInt(1, stats.getScore());
+        statement.setDouble(1, stats.getScore());
         statement.setString(2, stats.getUuid().toString());
         statement.executeUpdate();
     }
@@ -48,7 +48,7 @@ public class StatsManager {
         statement.setString(1, uuid.toString());
         ResultSet results = statement.executeQuery();
         if (results.next()) {
-            Integer score = results.getInt("score");
+            Double score = results.getDouble("score");
             return new PlayerStats(uuid, score);
         }
         return null;
@@ -57,12 +57,15 @@ public class StatsManager {
     public PlayerStats getStatsByUUID(UUID uuid) {
         PlayerStats stats = findStatsByUUID(uuid);
         if (stats == null) {
-            stats = new PlayerStats(uuid, 0);
+            stats = new PlayerStats(uuid, 0d);
             createStats(stats);
         }
         updatePlayerStats(stats);
         return stats;
+    }
 
+    public void addScore(UUID uuid, Double points){
+        updatePlayerStats(getStatsByUUID(uuid).increment(points));
     }
 
 }

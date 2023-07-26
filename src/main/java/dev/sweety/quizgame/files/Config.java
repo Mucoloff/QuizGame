@@ -6,15 +6,16 @@ import dev.sweety.quizgame.utils.models.Category;
 import dev.sweety.quizgame.utils.models.Question;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 
 public class Config implements InstanceAccess {
@@ -27,57 +28,25 @@ public class Config implements InstanceAccess {
         plugin.saveDefaultConfig();
         config = plugin.getConfig();
 
-        test();
+        //test();
 
-        config.getStringList("categories")
-                .forEach(category -> categories
-                        .add(new Category(category, getQuestionList(("categories." + category)))));
-    }
+        categories.clear();
 
-    private static void test() {
-
-        List<Answer> ans1 = List.of(new Answer("si", 1),
-                new Answer("no", 0),
-                new Answer("sussolino (si)", 104));
-
-        List<Answer> ans2 = List.of(new Answer("si", 0),
-                new Answer("no", 10));
-
-        List<Question> q1 = List.of(new Question("sei frocio?",
-                        ans1
-                ),
-                new Question("sei un dev?",
-                        ans1
-                ));
-
-        List<Question> q2 = List.of(new Question("sei frocio?",
-                        ans2
-                ),
-                new Question("sei un dev?",
-                        ans2
-                ));
-
-        List<Category> c1 = List.of(
-                new Category("sussolino",
-                        q1
-                ),
-                new Category("sweety",
-                        q2
-                )
-        );
-
-
-
-        //todo fai a mano
-
-
-        List<String> c2 = config.getStringList("categories");
-        for (Category c : c1){
-
+        for (String cName : config.getStringList("categories.list")) {
+            String category = config.getString(String.format("categories.%s.category", cName));
+            List<Question> questions = new ArrayList<>();
+            for (String qName : config.getStringList(String.format("categories.%s.questions.list", cName))) {
+                String question = config.getString(String.format("categories.%s.questions.%s.question", cName, qName));
+                List<Answer> answers = new ArrayList<>();
+                for (String aName : config.getStringList(String.format("categories.%s.questions.%s.answers.list", cName, qName))) {
+                    String answer = config.getString(String.format("categories.%s.questions.%s.answers.%s.answer", cName, qName, aName));
+                    Double points = config.getDouble(String.format("categories.%s.questions.%s.answers.%s.points", cName, qName, aName));
+                    answers.add(new Answer(aName, answer, points));
+                }
+                questions.add(new Question(qName, question, answers));
+            }
+            categories.add(new Category(cName, category, questions));
         }
-
-
-        reload();
     }
 
     public static void reload() {
@@ -85,24 +54,18 @@ public class Config implements InstanceAccess {
         plugin.reloadConfig();
     }
 
-    @NotNull
-    public static List<Question> getQuestionList(@NotNull String path) {
-        List<?> list = config.getList(path);
-        if (list == null) {
-            return new ArrayList<>(0);
-        }
-        return list.stream().filter(object -> object instanceof Question).map(object -> (Question) object).collect(Collectors.toList());
+    public static @NotNull Component component(String message) {
+        return Component.text(color(message));
     }
 
-    public static @NotNull TextComponent component(String path) {
-        return Component.text(path);
+    public static @NotNull Component message(String path) {
+        return component(config.getString("messages." + path));
     }
 
 
     public static String string(String path) {
-        return color(config.getString(path));
+        return color(config.getString("messages." + path));
     }
-
 
 
     public static String color(String message) {
@@ -120,4 +83,21 @@ public class Config implements InstanceAccess {
         return matcher.appendTail(buffer).toString();
     }
 
+    public static int random(int size) {
+        return Math.abs(new Random().nextInt()) % size;
+    }
+
+    @NotNull
+    public static Component format(String path, Object... replacements) {
+        String format = config.getString("messages." + path);
+        if (format == null) return Component.empty();
+        for (int i = 0; i < replacements.length; i++) {
+            format = format.replace("%" + i + "%", replacements[i].toString());
+        }
+        return Component.text(color(format));
+    }
+
+    public static Double roundTo(Double points) {
+        return new BigDecimal(points).setScale(2, RoundingMode.HALF_UP).doubleValue();
+    }
 }

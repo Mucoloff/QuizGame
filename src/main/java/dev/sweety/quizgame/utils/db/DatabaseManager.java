@@ -1,55 +1,56 @@
 package dev.sweety.quizgame.utils.db;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
 import lombok.SneakyThrows;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.Statement;
 
 public class DatabaseManager {
 
-    private final HikariDataSource dataSource;
+    private final String USERNAME;
+    private final String PASSWORD;
+    private final String URL;
 
-    @SneakyThrows
-    public DatabaseManager(String url, String username, String password) {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        HikariConfig config = new HikariConfig();
-        config.setJdbcUrl(url);
-        config.setUsername(username);
-        config.setPassword(password);
-        dataSource = new HikariDataSource(config);
+    public DatabaseManager(String HOST, int PORT, String DATABASE, String USERNAME, String PASSWORD) {
+        this("jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASE + "?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true", USERNAME, PASSWORD);
     }
 
-    public DatabaseManager(String host, int port, String database, String username, String password) {
-        this(String.format("jdbc:mysql://%s:%s/%s", host, port, database), username, password);
+    public DatabaseManager(String URL, String USERNAME, String PASSWORD) {
+        this.URL = URL;
+        this.USERNAME = USERNAME;
+        this.PASSWORD = PASSWORD;
     }
 
-
-    @SneakyThrows
-    public void connect() {
-        dataSource.getConnection();
-    }
-
-    @SneakyThrows
-    public void createUsersTable() {
-        Connection connection = dataSource.getConnection(); Statement statement = connection.createStatement();
-            String query = "CREATE TABLE IF NOT EXISTS users (" +
-                    "id INT PRIMARY KEY AUTO_INCREMENT," +
-                    "player_uuid VARCHAR(36) NOT NULL," +
-                    "score INT)";
-            statement.executeUpdate(query);
-
-    }
+    private Connection connection;
 
 
     @SneakyThrows
     public Connection getConnection() {
-        return dataSource.getConnection();
+        if (connection == null) {
+            this.connection = DriverManager.getConnection(URL, this.USERNAME, this.PASSWORD);
+        }
+        return connection;
     }
 
+    @SneakyThrows
+    public void createUsersTable() {
+        Connection connection = getConnection();
+        Statement statement = connection.createStatement();
+        String query = "CREATE TABLE IF NOT EXISTS users (" +
+                "id INT PRIMARY KEY AUTO_INCREMENT," +
+                "player_uuid VARCHAR(36) NOT NULL," +
+                "score DOUBLE)";
+        statement.executeUpdate(query);
+
+    }
+
+
+    @SneakyThrows
     public void close() {
-        dataSource.close();
+        if (this.connection != null) {
+            this.connection.close();
+        }
     }
 
 }

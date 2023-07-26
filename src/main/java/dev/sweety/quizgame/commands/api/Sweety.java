@@ -9,8 +9,8 @@ public @interface Sweety {
 
     String permission();
 
-    String noPermissionMessage() default "&7Running &bFFACore &a1.0 &7by &cSweetyDreams_";
+    String noPermissionMessage() default "&7Running &bQuizGame &a1.0 &7by &cSweetyDreams_";
 
-    String noSubCommandFoundMessage() default "&cComando inesistente";
+    String noSubCommandFoundMessage() default "&cInvalid command";
 
 }

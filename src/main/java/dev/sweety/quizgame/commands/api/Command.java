@@ -89,6 +89,7 @@ public abstract class Command implements CommandExecutor, TabExecutor, InstanceA
             return true;
         }
 
+        List<String> argList = Arrays.asList(args);
         if (args.length > 0 && CommandHandler.getSubCommands(this).size() > 0) {
             List<Subcommand> subcommands = CommandHandler.getSubCommands(this);
             Subcommand subcommand = subcommands.stream().filter(sub -> sub.getName().equalsIgnoreCase(args[0])).findFirst().orElse(null);
@@ -101,8 +102,8 @@ public abstract class Command implements CommandExecutor, TabExecutor, InstanceA
             }
 
 
-            subcommand.execute(sender, Arrays.asList(args));
-        } else execute(sender, Arrays.asList(args));
+            subcommand.execute(sender, argList);
+        } else execute(sender, argList);
         return true;
     }
 

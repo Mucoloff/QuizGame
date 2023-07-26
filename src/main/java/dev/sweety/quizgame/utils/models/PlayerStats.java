@@ -12,5 +12,10 @@ import java.util.UUID;
 public class PlayerStats {
 
     private UUID uuid;
-    private Integer score;
+    private Double score;
+
+    public PlayerStats increment(double i) {
+        score += i;
+        return this;
+    }
 }
