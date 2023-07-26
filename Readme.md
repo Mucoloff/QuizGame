@@ -19,7 +19,7 @@ To install the "Quiz Game" plugin, follow these steps:
 
 4. Load the plugin.
 
-5. Make sure you have mysql or mariadb installed, that you have given the right permissions to your user and that you
+5. Make sure you have MySQL or MariaDB installed, that you have given the right permissions to your user and that you
    have created the database
 
 ## Configuration
@@ -48,10 +48,10 @@ database:
   password: "password"
 ```
 
-- `host`: The hostname or IP address of your MariaDB server.
-- `port`: The port number of the MariaDB server.
+- `host`: The hostname or IP address of your MySQL / MariaDB database.
+- `port`: The port number of the database.
 - `name`: The name of the database where player scores will be stored.
-- `username`: The username to connect to the MariaDB server.
+- `username`: The username to connect to the database.
 - `password`: The password to authenticate the database connection.
 
 ### Messages Configuration
@@ -170,25 +170,25 @@ The "Quiz Game" plugin comes with the following commands:
 - `/play <category>`: Start a quiz game with the selected category. For example `/startquiz geography`.
 - `/score`: View your score.
 - `/qreload`: Reload the plugin's configuration.
-- `/answer <category> <question> <answer>`: To answer a question during the quiz, either type the answer in chat or use
+- `/answer <category> <question> <answer>`: To answer a question during the quiz, either click the answer in chat or use
   the /answer command followed by the category, question, and your chosen answer. For
   example `/answer geography capital paris`.
 
 ## Gameplay
 
 To participate in the quiz game, players need to use the `/quiz` command followed by the desired quiz category. Once the
-game starts, players will receive questions and must answer them by typing their response in the chat or using
+game starts, players will receive questions and must answer them clicking their response in the chat or using
 the `/answer` command.
 
 ### How to Answer Questions
 
 Players can answer questions in two ways:
 
-1. <b>In Chat</b>: To answer a question, click your response directly in the chat. The plugin will automatically
-   evaluate your answer and award points accordingly.
+1. <b>In Chat</b>: To answer a question, click your response directly in the chat. 
 2. <b>Using /answer Command</b>: Alternatively, you can use the /answer command to submit your response.
 
-Players' scores will be saved in the MariaDB database, allowing you to track and display their progress later.
+- The plugin will automatically evaluate your answer and award points accordingly.
+- Players' scores will be saved in the database, allowing you to track and display their progress later.
 
 ## Conclusion
 
