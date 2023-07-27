@@ -10,11 +10,12 @@ import dev.sweety.quizgame.utils.models.Game;
 import dev.sweety.quizgame.utils.models.Question;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import static dev.sweety.quizgame.files.Config.roundTo;
 
 @Sweety(name = "answer", permission = "quizgame.play")
 public class AnswerCommand extends Command {
@@ -72,9 +73,30 @@ public class AnswerCommand extends Command {
 
         playerstats.addScore(p.getUniqueId(), points);
 
-        p.sendMessage(Config.format("points", roundTo(points)));
+        p.sendMessage(Config.format("points", Config.roundTo(points)));
 
         this.game.remove(p);
     }
 
+    @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command command, @NotNull String alias, @NotNull String[] args) {
+        if (!(sender instanceof Player p) || !game.containsKey(p)) return null;
+        Game game = this.game.get(p);
+        Category category = game.category();
+        if (args.length == 1) return List.of(category.name());
+
+        Question question = game.question();
+
+        if (args.length == 2) {
+            return List.of(question.name());
+        }
+
+        if (args.length == 3) {
+            List<String> answers = new ArrayList<>();
+            question.answers().forEach(a -> answers.add(a.name()));
+            return answers;
+        }
+
+        return null;
+    }
 }
